@@ -61,3 +61,4 @@ list.addEventListener('click', (e) => {
 document.getElementById('helloBtn').addEventListener('click', () => {
   alert('Ассалому алайкум! Done belgisi bilan ishlayapti 🚀');
 });
+const clearBtn = document.getElementById('clearDone');
