@@ -5,4 +5,3 @@ header { background: white; border-radius: 16px; box-shadow: 0 6px 20px rgba(0,0
 button { padding: 8px 14px; border-radius: 10px; border: 1px solid #ddd; cursor: pointer; }
 input { padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; }
 li { background: white; margin: 8px 0; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; }
-li.done span { text-decoration: line-through; opacity: .6; }
