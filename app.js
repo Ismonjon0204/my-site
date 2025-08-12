@@ -66,3 +66,4 @@ function updateClearButton(items) {
   const hasDone = items.some(t => t.done);
   clearBtn.disabled = !hasDone;
 }
+updateClearButton(items);
