@@ -67,3 +67,8 @@ function updateClearButton(items) {
   clearBtn.disabled = !hasDone;
 }
 updateClearButton(items);
+clearBtn.addEventListener('click', () => {
+  todos = todos.filter(t => !t.done); // faqat bajarilmaganlar qolsin
+  save(todos);
+  render(todos);
+});
