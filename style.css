@@ -6,3 +6,5 @@ button { padding: 8px 14px; border-radius: 10px; border: 1px solid #ddd; cursor:
 input { padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; }
 li { background: white; margin: 8px 0; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; }
 li.done span { text-decoration: line-through; opacity: .6; }
+.toolbar { display: flex; justify-content: flex-end; margin: 8px 0; }
+#clearDone[disabled] { opacity: .5; cursor: not-allowed; }
