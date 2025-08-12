@@ -62,3 +62,7 @@ document.getElementById('helloBtn').addEventListener('click', () => {
   alert('Ассалому алайкум! Done belgisi bilan ishlayapti 🚀');
 });
 const clearBtn = document.getElementById('clearDone');
+function updateClearButton(items) {
+  const hasDone = items.some(t => t.done);
+  clearBtn.disabled = !hasDone;
+}
