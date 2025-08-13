@@ -8,3 +8,9 @@ li { background: white; margin: 8px 0; padding: 10px; border-radius: 10px; displ
 li.done span { text-decoration: line-through; opacity: .6; }
 .toolbar { display: flex; justify-content: flex-end; margin: 8px 0; }
 #clearDone[disabled] { opacity: .5; cursor: not-allowed; }
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin:8px 0;gap:8px;flex-wrap:wrap}
+.filters{display:flex;gap:8px}
+.filter{padding:6px 10px;border:1px solid #ddd;border-radius:10px;background:#fff;cursor:pointer}
+.filter.active{box-shadow:0 0 0 2px rgba(0,0,0,.06);font-weight:600}
+.right{display:flex;align-items:center;gap:10px}
+#clearDone[disabled]{opacity:.5;cursor:not-allowed}
