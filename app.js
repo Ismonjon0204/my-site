@@ -67,6 +67,40 @@ list.addEventListener('click', e=>{
     if (t){ t.done = e.target.checked; save(todos); render(todos); }
   }
 });
+// === B: inline edit (double-click) ===
+list.addEventListener('dblclick', (e) => {
+  const span = e.target.closest('span.text'); // faqat matnni tahrirlash
+  if (!span) return;
+  const li = span.closest('li');
+  const id = Number(li.dataset.id);
+  startEdit(li, id);
+});
+
+function startEdit(li, id) {
+  const todo = todos.find(t => t.id === id);
+  if (!todo) return;
+
+  const span = li.querySelector('span.text');
+  const input = document.createElement('input');
+  input.className = 'edit-input';
+  input.value = todo.text;
+  span.replaceWith(input);
+  input.focus();
+  input.select();
+
+  const commit = () => {
+    const v = input.value.trim();
+    if (v) { todo.text = v; save(todos); }
+    render(todos);
+  };
+  const cancel = () => render(todos);
+
+  input.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter') commit();
+    if (ev.key === 'Escape') cancel();
+  });
+  input.addEventListener('blur', commit);
+}
 if (clearBtn){
   clearBtn.addEventListener('click', ()=>{
     todos = todos.filter(t=>!t.done);
