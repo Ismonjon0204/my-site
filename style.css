@@ -14,3 +14,4 @@ li.done span { text-decoration: line-through; opacity: .6; }
 .filter.active{box-shadow:0 0 0 2px rgba(0,0,0,.06);font-weight:600}
 .right{display:flex;align-items:center;gap:10px}
 #clearDone[disabled]{opacity:.5;cursor:not-allowed}
+.edit-input{width:100%; padding:6px 8px; border:1px solid #bbb; border-radius:8px; font:inherit}
