@@ -15,3 +15,6 @@ li.done span { text-decoration: line-through; opacity: .6; }
 .right{display:flex;align-items:center;gap:10px}
 #clearDone[disabled]{opacity:.5;cursor:not-allowed}
 .edit-input{width:100%; padding:6px 8px; border:1px solid #bbb; border-radius:8px; font:inherit}
+/* tahrir payti uchun ixtiyoriy ko'rinish */
+li.editing { opacity: .95; }
+.edit-input{width:100%; padding:6px 8px; border:1px solid #bbb; border-radius:8px; font:inherit}
