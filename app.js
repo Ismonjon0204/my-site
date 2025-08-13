@@ -35,7 +35,7 @@ function render(items){
     li.innerHTML = `
       <label style="display:flex;gap:8px;align-items:center;flex:1">
         <input type="checkbox" class="toggle" ${t.done ? 'checked' : ''}/>
-        <span>${t.text}</span>
+        <span class="text">${t.text}</span>
       </label>
       <button class="del">O‘chirish</button>
     `;
