@@ -18,7 +18,18 @@
     <form id="todoForm">
       <input id="todoInput" placeholder="Vazifa kiriting" required />
       <button type="submit">Qo‘shish</button>
-    </form>
+    </form><div class="toolbar">
+  <div class="filters">
+    <button class="filter active" data-filter="all">Hammasi</button>
+    <button class="filter" data-filter="active">Ochiq</button>
+    <button class="filter" data-filter="done">Bajarilgan</button>
+  </div>
+  <div class="right">
+    <span id="count"></span>
+    <button id="clearDone" disabled>Bajarilganlarni tozalash</button>
+  </div>
+</div>
+
     <ul id="todoList"></ul>
   </main>
 
