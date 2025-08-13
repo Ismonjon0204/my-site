@@ -1,11 +1,12 @@
-// app.js — done + clear + filters + count
+// app.js — done + clear + filters + count + inline edit (barqaror)
 const list = document.getElementById('todoList');
 const form = document.getElementById('todoForm');
 const input = document.getElementById('todoInput');
 const clearBtn = document.getElementById('clearDone');
 const KEY = 'todos_v1';
 
-let filter = 'all'; // all | active | done
+let filter = 'all';            // all | active | done
+let editingId = null;          // hozir tahrirlayotgan id bo'lsa, boshqa kliklar ishlamasin
 
 function load(){ const raw = localStorage.getItem(KEY); return raw? JSON.parse(raw):[] }
 function save(items){ localStorage.setItem(KEY, JSON.stringify(items)) }
@@ -31,7 +32,7 @@ function render(items){
   for (const t of data){
     const li = document.createElement('li');
     li.dataset.id = t.id;
-    li.className = t.done ? 'done' : '';
+    li.className = (t.done ? 'done ' : '') + (editingId===t.id ? 'editing' : '');
     li.innerHTML = `
       <label style="display:flex;gap:8px;align-items:center;flex:1">
         <input type="checkbox" class="toggle" ${t.done ? 'checked' : ''}/>
@@ -48,6 +49,7 @@ function render(items){
 let todos = load().map(t=>({id:t.id, text:t.text, done:!!t.done}));
 render(todos);
 
+// yangi task
 form.addEventListener('submit', e=>{
   e.preventDefault();
   const text = input.value.trim();
@@ -55,9 +57,13 @@ form.addEventListener('submit', e=>{
   todos.push({id:Date.now(), text, done:false});
   save(todos); render(todos); input.value='';
 });
+
+// del / toggle (tahrir paytida ishlamasin)
 list.addEventListener('click', e=>{
+  if (editingId !== null) return;
   const li = e.target.closest('li'); if(!li) return;
   const id = Number(li.dataset.id);
+
   if (e.target.classList.contains('del')){
     todos = todos.filter(t=>t.id!==id);
     save(todos); render(todos);
@@ -67,47 +73,56 @@ list.addEventListener('click', e=>{
     if (t){ t.done = e.target.checked; save(todos); render(todos); }
   }
 });
-// === B: inline edit (double-click) ===
-list.addEventListener('dblclick', (e) => {
-  const span = e.target.closest('span.text'); // faqat matnni tahrirlash
+
+// === inline edit (double-click) ===
+list.addEventListener('dblclick', e=>{
+  const span = e.target.closest('span.text');
   if (!span) return;
+  e.preventDefault();          // label / checkbox yon ta’sirini to‘xtatamiz
+  e.stopPropagation();
+
   const li = span.closest('li');
   const id = Number(li.dataset.id);
   startEdit(li, id);
 });
 
-function startEdit(li, id) {
-  const todo = todos.find(t => t.id === id);
+function startEdit(li, id){
+  const todo = todos.find(t=>t.id===id);
   if (!todo) return;
 
+  editingId = id;
+  li.classList.add('editing');
+
   const span = li.querySelector('span.text');
-  const input = document.createElement('input');
-  input.className = 'edit-input';
-  input.value = todo.text;
-  span.replaceWith(input);
-  input.focus();
-  input.select();
+  const editor = document.createElement('input');
+  editor.className = 'edit-input';
+  editor.value = todo.text;
+  span.replaceWith(editor);
+  editor.focus(); editor.select();
 
-  const commit = () => {
-    const v = input.value.trim();
+  const commit = ()=>{
+    const v = editor.value.trim();
     if (v) { todo.text = v; save(todos); }
-    render(todos);
+    editingId = null; render(todos);
   };
-  const cancel = () => render(todos);
+  const cancel = ()=>{ editingId = null; render(todos); };
 
-  input.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Enter') commit();
-    if (ev.key === 'Escape') cancel();
+  editor.addEventListener('keydown', ev=>{
+    if (ev.key==='Enter') commit();
+    if (ev.key==='Escape') cancel();
   });
-  input.addEventListener('blur', commit);
+  editor.addEventListener('blur', commit);
 }
+
+// clear done
 if (clearBtn){
   clearBtn.addEventListener('click', ()=>{
     todos = todos.filter(t=>!t.done);
     save(todos); render(todos);
   });
 }
-// filter tugmalari
+
+// filters
 document.querySelectorAll('.filter').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     filter = btn.dataset.filter;
@@ -117,5 +132,5 @@ document.querySelectorAll('.filter').forEach(btn=>{
 });
 
 document.getElementById('helloBtn').addEventListener('click', ()=>{
-  alert('Ассалому алайкум! Filtrlash ham ishlayapti 🚀');
+  alert('Ассалому алайкум! Hammasi zo‘r ishlayapti 🚀');
 });
