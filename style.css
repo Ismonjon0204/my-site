@@ -89,3 +89,5 @@ button.del:hover{ background:#fee2e2; border-color:#fecaca; color:#991b1b }
 /* inline edit input */
 .edit-input{width:100%; padding:8px 10px; border:1px solid var(--border); background:var(--card); color:var(--text); border-radius:12px}
 .edit-input:focus{outline:none; box-shadow:var(--ring); border-color:transparent}
+/* drag holati */
+li.dragging{ opacity:.6; transform: scale(.995) }
