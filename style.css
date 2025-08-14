@@ -18,4 +18,5 @@ li.done span { text-decoration: line-through; opacity: .6; }
 /* tahrir payti uchun ixtiyoriy ko'rinish */
 li.editing { opacity: .95; }
 .edit-input{width:100%; padding:6px 8px; border:1px solid #bbb; border-radius:8px; font:inherit}
+.text{ cursor: text; }
 /* tahrir payti uchun ixtiyoriy ko'rinish */
