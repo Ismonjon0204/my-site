@@ -40,7 +40,7 @@ function render(items) {
     li.innerHTML = `
       <label style="display:flex;gap:8px;align-items:center;flex:1">
         <input type="checkbox" class="toggle" ${t.done ? 'checked' : ''}/>
-        <span class="text" ondblclick="editFromSpan(this)">${t.text}</span>
+        <span class="text" title="Tahrirlash uchun ikki marta bosing">${t.text}</span>
       </label>
       <button class="del">O‘chirish</button>
     `;
