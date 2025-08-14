@@ -5,8 +5,8 @@ const input = document.getElementById('todoInput');
 const clearBtn = document.getElementById('clearDone');
 const KEY = 'todos_v1';
 
-let filter = 'all';            // all | active | done
-let editingId = null;          // hozir tahrirlayotgan id bo'lsa, boshqa kliklar ishlamasin
+let filter = 'all';     // all | active | done
+let editingId = null;   // tahrir paytida boshqa kliklar ishlamasin
 
 function load(){ const raw = localStorage.getItem(KEY); return raw? JSON.parse(raw):[] }
 function save(items){ localStorage.setItem(KEY, JSON.stringify(items)) }
@@ -36,7 +36,7 @@ function render(items){
     li.innerHTML = `
       <label style="display:flex;gap:8px;align-items:center;flex:1">
         <input type="checkbox" class="toggle" ${t.done ? 'checked' : ''}/>
-        <span class="text">${t.text}</span>
+        <span class="text" title="Tahrirlash uchun ikki marta bosing">${t.text}</span>
       </label>
       <button class="del">O‘chirish</button>
     `;
@@ -58,7 +58,7 @@ form.addEventListener('submit', e=>{
   save(todos); render(todos); input.value='';
 });
 
-// del / toggle (tahrir paytida ishlamasin)
+// del / toggle — tahrir paytida bloklanadi
 list.addEventListener('click', e=>{
   if (editingId !== null) return;
   const li = e.target.closest('li'); if(!li) return;
@@ -78,7 +78,7 @@ list.addEventListener('click', e=>{
 list.addEventListener('dblclick', e=>{
   const span = e.target.closest('span.text');
   if (!span) return;
-  e.preventDefault();          // label / checkbox yon ta’sirini to‘xtatamiz
+  e.preventDefault();      // label/checkbox yon ta’sirlarini to‘хтат
   e.stopPropagation();
 
   const li = span.closest('li');
@@ -129,8 +129,4 @@ document.querySelectorAll('.filter').forEach(btn=>{
     document.querySelectorAll('.filter').forEach(b=>b.classList.toggle('active', b===btn));
     render(todos);
   });
-});
-
-document.getElementById('helloBtn').addEventListener('click', ()=>{
-  alert('Ассалому алайкум! Hammasi zo‘r ishlayapti 🚀');
 });
