@@ -86,10 +86,10 @@ list.addEventListener('dblclick', e=>{
 });
 
 function startEdit(li, id){
-  const todo = todos.find(t=>t.id===id);
+  const todo = todos.find(t => t.id === id); // <-- kerak
   if (!todo) return;
 
-  editingId = id;
+  editingId = id;                 // <-- tahrir boshlanganini belgilaymiz
   li.classList.add('editing');
 
   const span = li.querySelector('span.text');
@@ -99,16 +99,17 @@ function startEdit(li, id){
   span.replaceWith(editor);
   editor.focus(); editor.select();
 
-  const commit = ()=>{
+  const commit = () => {
     const v = editor.value.trim();
     if (v) { todo.text = v; save(todos); }
-    editingId = null; render(todos);
+    editingId = null;             // tugadi
+    render(todos);
   };
-  const cancel = ()=>{ editingId = null; render(todos); };
+  const cancel = () => { editingId = null; render(todos); };
 
-  editor.addEventListener('keydown', ev=>{
-    if (ev.key==='Enter') commit();
-    if (ev.key==='Escape') cancel();
+  editor.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter') commit();
+    if (ev.key === 'Escape') cancel();
   });
   editor.addEventListener('blur', commit);
 }
