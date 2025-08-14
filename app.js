@@ -88,14 +88,7 @@ list.addEventListener('dblclick', e => {
   startEdit(li, Number(li.dataset.id));
 });
 
-function startEdit(li, id)// span ichidan chaqiriladigan global helper
-window.editFromSpan = function (spanEl) {
-  const li = spanEl.closest('li');
-  if (!li) return;
-  const id = Number(li.dataset.id);
-  startEdit(li, id);
-};
- {
+function startEdit(li, id){
   const todo = todos.find(t => t.id === id);
   if (!todo) return;
 
