@@ -1,22 +1,22 @@
 :root { font-family: system-ui, Arial; line-height: 1.5; }
 body { margin: 0; background: #f7f7f8; color: #111; }
-.container { max-width: 800px; margin: 24px auto; padding: 16px; }
-header { background: white; border-radius: 16px; box-shadow: 0 6px 20px rgba(0,0,0,.06); }
-button { padding: 8px 14px; border-radius: 10px; border: 1px solid #ddd; cursor: pointer; }
+.container { max-width: 900px; margin: 24px auto; padding: 16px; }
+
+header { background: #fff; border-radius: 16px; box-shadow: 0 6px 20px rgba(0,0,0,.06); }
+button { padding: 8px 14px; border-radius: 10px; border: 1px solid #ddd; background:#fff; cursor: pointer; }
 input { padding: 8px 10px; border-radius: 8px; border: 1px solid #ccc; }
-li { background: white; margin: 8px 0; padding: 10px; border-radius: 10px; display: flex; justify-content: space-between; }
-li.done span { text-decoration: line-through; opacity: .6; }
-.toolbar { display: flex; justify-content: flex-end; margin: 8px 0; }
-#clearDone[disabled] { opacity: .5; cursor: not-allowed; }
+
+ul { list-style: none; padding: 0; margin: 0; }
+li { background: #fff; margin: 10px 0; padding: 12px; border-radius: 12px;
+     display: flex; align-items: center; gap: 12px; justify-content: space-between; }
+li.done span.text { text-decoration: line-through; opacity: .6; }
+
 .toolbar{display:flex;justify-content:space-between;align-items:center;margin:8px 0;gap:8px;flex-wrap:wrap}
 .filters{display:flex;gap:8px}
 .filter{padding:6px 10px;border:1px solid #ddd;border-radius:10px;background:#fff;cursor:pointer}
 .filter.active{box-shadow:0 0 0 2px rgba(0,0,0,.06);font-weight:600}
 .right{display:flex;align-items:center;gap:10px}
 #clearDone[disabled]{opacity:.5;cursor:not-allowed}
-.edit-input{width:100%; padding:6px 8px; border:1px solid #bbb; border-radius:8px; font:inherit}
-/* tahrir payti uchun ixtiyoriy ko'rinish */
-li.editing { opacity: .95; }
+
 .edit-input{width:100%; padding:6px 8px; border:1px solid #bbb; border-radius:8px; font:inherit}
 .text{ cursor: text; }
-/* tahrir payti uchun ixtiyoriy ko'rinish */
