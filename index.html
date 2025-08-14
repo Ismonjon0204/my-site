@@ -4,41 +4,40 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Menig saytim</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css?v=9" />
 </head>
 <body>
   <header class="container">
     <h1>Salom, dunyo!</h1>
-    <p>Bu mening birinchi saytım 😊</p>
+    <p>Bu mening birinchi saytim 😊</p>
     <button id="helloBtn">Bosing</button>
   </header>
 
   <main class="container">
-    <h2>Oddiy To‑Do ro‘yxati</h2>
+    <h2>Oddiy To-Do ro‘yxati</h2>
+
     <form id="todoForm">
       <input id="todoInput" placeholder="Vazifa kiriting" required />
       <button type="submit">Qo‘shish</button>
-    </form><div class="toolbar">
-  <div class="filters">
-    <button class="filter active" data-filter="all">Hammasi</button>
-    <button class="filter" data-filter="active">Ochiq</button>
-    <button class="filter" data-filter="done">Bajarilgan</button>
-  </div>
-  <div class="right">
-    <span id="count"></span>
-    <button id="clearDone" disabled>Bajarilganlarni tozalash</button>
-  </div>
-</div>
+    </form>
+
+    <div class="toolbar">
+      <div class="filters">
+        <button class="filter active" data-filter="all">Hammasi</button>
+        <button class="filter" data-filter="active">Ochiq</button>
+        <button class="filter" data-filter="done">Bajarilgan</button>
+      </div>
+      <div class="right">
+        <span id="count"></span>
+        <button id="clearDone" disabled>Bajarilganlarni tozalash</button>
+      </div>
+    </div>
 
     <ul id="todoList"></ul>
   </main>
 
-  <script src="app.js"></script>
+  <!-- MUHIM: faqat bitta script! -->
+  <script src="app.js?v=9"></script>
 </body>
 </html>
-<div class="toolbar">
-  <button id="clearDone" disabled>Bajarilganlarni tozalash</button>
-</div>
-<link rel="stylesheet" href="style.css?v=7">
-<script src="app.js?v=7"></script>
-
