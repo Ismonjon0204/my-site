@@ -78,9 +78,8 @@ list.addEventListener('click', e=>{
 list.addEventListener('dblclick', e=>{
   const span = e.target.closest('span.text');
   if (!span) return;
-  e.preventDefault();      // label/checkbox yon ta’sirlarini to‘хтат
+  e.preventDefault();
   e.stopPropagation();
-
   const li = span.closest('li');
   const id = Number(li.dataset.id);
   startEdit(li, id);
