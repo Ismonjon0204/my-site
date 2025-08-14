@@ -140,3 +140,26 @@ document.querySelectorAll('.filter').forEach((btn) => {
 document.getElementById('helloBtn')?.addEventListener('click', () => {
   alert('Ассалому алайкум! Hammasi ishga tushdi 🚀');
 });
+// === Dark / Light theme toggle ===
+(function themeInit(){
+  const btn = document.getElementById('themeToggle');
+  if(!btn) return;
+  const root = document.documentElement;
+  // o'qish
+  const saved = localStorage.getItem('theme');
+  if(saved){ root.setAttribute('data-theme', saved); }
+  updateIcon();
+
+  btn.addEventListener('click', ()=>{
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateIcon();
+  });
+
+  function updateIcon(){
+    const dark = root.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '☀️' : '🌙';
+    btn.title = dark ? "Yorug' rejim" : "Tungi rejim";
+  }
+})();
