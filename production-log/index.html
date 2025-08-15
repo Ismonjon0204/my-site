@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Шуруп ишлаб чиқариш — Киритиш журнали</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <header class="container">
+    <button id="themeToggle" class="theme-toggle" aria-label="Tungi rejim">🌙</button>
+    <h1>Шакл бериш участкаси — маҳсулот киритиш</h1>
+    <p class="muted">Дастгоҳдан чиққан маҳсулотлар журнали (localStorage’да қайд этилади)</p>
+    <div class="stats">
+      <div><strong id="totalCount">0</strong><span>жами ёзув</span></div>
+      <div><strong id="totalKg">0</strong><span>кг жами</span></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Ёзув қўшиш / таҳрирлаш</h2>
+      <form id="entryForm" autocomplete="off">
+        <div class="grid">
+          <label>
+            <span>Тартиб рақам</span>
+            <input type="number" id="serialNo" placeholder="масалан, 1" min="1" required />
+          </label>
+          <label>
+            <span>Дастгоҳ рақами</span>
+            <input type="text" id="machineNo" placeholder="масалан, DG-12" required />
+          </label>
+          <label>
+            <span>Сана</span>
+            <input type="date" id="date" value="2025-08-14" required />
+          </label>
+          <label>
+            <span>Тара номер</span>
+            <input type="text" id="taraNo" placeholder="масалан, T-045" required />
+          </label>
+          <label class="col2">
+            <span>Маҳсулот ўлчами</span>
+            <input type="text" id="size" placeholder="масалан, 4×20 мм" required />
+          </label>
+          <label>
+            <span>Кг</span>
+            <input type="number" id="kg" placeholder="масалан, 12.5" min="0" step="0.01" required />
+          </label>
+          <label>
+            <span>Оператор</span>
+            <input type="text" id="operator" placeholder="масалан, Абдулазиз" required />
+          </label>
+          <label>
+            <span>Цех</span>
+            <input type="text" id="workshop" placeholder="масалан, Ц-1" required />
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="saveBtn">Қўшиш</button>
+          <button type="button" id="resetBtn" class="subtle">Тозалаш</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="toolbar">
+        <div class="left">
+          <input id="search" placeholder="Қидириш: оператор, дастгоҳ, ўлчам, цех..." />
+        </div>
+        <div class="right">
+          <button id="exportCsv" title="CSV’га экспорт">CSV ⬇️</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="logTable">
+          <thead>
+            <tr>
+              <th data-sort="serialNo">Т/р</th>
+              <th data-sort="machineNo">Дастгоҳ</th>
+              <th data-sort="date">Сана</th>
+              <th data-sort="taraNo">Тара</th>
+              <th data-sort="size">Ўлчам</th>
+              <th data-sort="kg" class="num">Кг</th>
+              <th data-sort="operator">Оператор</th>
+              <th data-sort="workshop">Цех</th>
+              <th class="actions">Амал</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5" class="muted">Жами</td>
+              <td class="num" id="sumKg">0</td>
+              <td colspan="3"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js?v=1"></script>
+</body>
+</html>
