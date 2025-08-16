@@ -1,4 +1,15 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Шакл бериш участкаси — маҳсулот киритиш (Pro)</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css?v=2" />
+</head>
+
 <body>
+  <!-- ============ Sidebar ============ -->
   <aside class="sidebar">
     <div class="brand">⚙️ Zavod</div>
     <nav>
@@ -8,6 +19,7 @@
     </nav>
   </aside>
 
+  <!-- ============ Content ============ -->
   <main class="content">
     <!-- TOPBAR -->
     <header class="topbar">
@@ -20,17 +32,21 @@
       </div>
     </header>
 
-    <!-- =======================
-         KIRISH SAHIFASI
-         ======================= -->
+    <!-- ===================== KIRISH (asosiy sahifa) ===================== -->
     <section id="page-input">
       <!-- KPIs -->
       <section class="kpis">
-        <div class="kpi"><div class="kpi-value" id="kpiCount">0</div><div class="kpi-label">жами ёзув</div></div>
-        <div class="kpi"><div class="kpi-value" id="kpiKg">0.00</div><div class="kpi-label">кг жами</div></div>
+        <div class="kpi">
+          <div class="kpi-value" id="kpiCount">0</div>
+          <div class="kpi-label">жами ёзув</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-value" id="kpiKg">0.00</div>
+          <div class="kpi-label">кг жами</div>
+        </div>
       </section>
 
-      <!-- Settings row -->
+      <!-- Smena konteksti -->
       <section class="card">
         <h3>Smenalik mahsulot kiritish</h3>
         <div class="grid g4 g2-md g1-sm">
@@ -59,7 +75,6 @@
               <option value="">tanlang</option>
               <option>Akmal</option>
               <option>Shokir</option>
-              <!-- xohlagan operatorlarni qo'shing -->
             </select>
           </label>
 
@@ -219,7 +234,7 @@
               <input id="mInp" placeholder="масалан, DG-12" />
               <button id="mAdd">Қўшиш</button>
             </div>
-            <ul id="mList" class="list"></ul>
+              <ul id="mList" class="list"></ul>
           </div>
 
           <div>
@@ -244,9 +259,7 @@
       </section>
     </section><!-- /#page-input -->
 
-    <!-- =======================
-         HISOBOTLAR SAHIFASI
-         ======================= -->
+    <!-- ===================== HISOBOTLAR ===================== -->
     <section id="page-reports" hidden>
       <header class="page-head">
         <h1>Kengaytirilgan hisobotlar</h1>
@@ -276,9 +289,7 @@
       </div>
     </section>
 
-    <!-- =======================
-         ARXIVLAR SAHIFASI
-         ======================= -->
+    <!-- ===================== ARXIVLAR ===================== -->
     <section id="page-archives" hidden>
       <header class="page-head">
         <h1>Smena arxivlari</h1>
@@ -288,7 +299,7 @@
       <div class="card">
         <table id="archGrid" class="table">
           <thead>
-          <tr><th>ID</th><th>Sana</th><th>Smena</th><th>Tsex</th><th>Master</th><th>Yozuv</th><th>Kg</th><th>Amal</th></tr>
+            <tr><th>ID</th><th>Sana</th><th>Smena</th><th>Tsex</th><th>Master</th><th>Yozuv</th><th>Kg</th><th>Amal</th></tr>
           </thead>
           <tbody></tbody>
         </table>
@@ -296,5 +307,6 @@
     </section>
   </main>
 
-  <script src="app.js?v=1"></script>
+  <script src="app.js?v=2"></script>
 </body>
+</html>
