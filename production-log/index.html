@@ -1,1 +1,212 @@
-<!doctype html><title>plant-pro</title><p>Index not found placeholder.</p>
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Шакл бериш участкаси — маҳсулот киритиш (Pro)</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <strong>Шакл бериш участкаси</strong>
+      <span class="muted">— маҳсулот киритиш</span>
+    </div>
+    <div class="top-actions">
+      <button id="themeToggle" class="ghost" title="Кун/тун режими">🌙</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="kpis">
+      <div class="kpi"><div class="kpi-value" id="kpiCount">0</div><div class="kpi-label">жами ёзув</div></div>
+      <div class="kpi"><div class="kpi-value" id="kpiKg">0.00</div><div class="kpi-label">кг жами</div></div>
+    </section>
+
+    <section class="card">
+      <h3>Ўрнатмалар</h3>
+      <div class="grid g4 g2-md g1-sm">
+        <label class="field">
+          <span>Сана</span>
+          <input type="date" id="fDate" />
+        </label>
+        <label class="field">
+          <span>Смена</span>
+          <select id="fShift">
+            <option value="1">1-смена</option>
+            <option value="2">2-смена</option>
+            <option value="3">3-смена</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Цех</span>
+          <select id="fWorkshop"></select>
+        </label>
+        <label class="field">
+          <span>Тартиб рақам</span>
+          <input type="number" id="fIndex" readonly />
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-title">
+        <h3>Ёзув қўшиш / таҳрирлаш</h3>
+        <div class="muted" id="editBadge" hidden>Таҳрир режими</div>
+      </div>
+
+      <div class="grid g3 g2-md g1-sm">
+        <label class="field">
+          <span>Маҳсулот тури</span>
+          <select id="fType"></select>
+        </label>
+        <label class="field">
+          <span>Ўлчами</span>
+          <select id="fSize"></select>
+        </label>
+        <label class="field">
+          <span>Дастгоҳ</span>
+          <select id="fMachine"></select>
+        </label>
+
+        <label class="field">
+          <span>Тара рақами</span>
+          <input type="text" id="fTare" placeholder="масалан, Т-045" />
+        </label>
+        <label class="field">
+          <span>Кг</span>
+          <input type="number" id="fKg" min="0" step="0.01" placeholder="масалан, 12.5" />
+        </label>
+        <label class="field">
+          <span>Изоҳ (ихтиёрий)</span>
+          <input type="text" id="fNote" placeholder="ихтиёрий" />
+        </label>
+      </div>
+
+      <div class="row-right">
+        <button id="btnClear" class="ghost">Тозалаш</button>
+        <button id="btnSave">Қўшиш</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Филтр</h3>
+      <div class="grid g6 g3-md g1-sm">
+        <label class="field">
+          <span>Бошлаш санаси</span>
+          <input type="date" id="flFrom" />
+        </label>
+        <label class="field">
+          <span>Якун санаси</span>
+          <input type="date" id="flTo" />
+        </label>
+        <label class="field">
+          <span>Смена</span>
+          <select id="flShift">
+            <option value="">Барчаси</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Цех</span>
+          <select id="flWorkshop"></select>
+        </label>
+        <label class="field">
+          <span>Тур</span>
+          <select id="flType"></select>
+        </label>
+        <label class="field">
+          <span>Ўлчам</span>
+          <select id="flSize"><option value="">Барчаси</option></select>
+        </label>
+        <label class="field">
+          <span>Дастгоҳ</span>
+          <select id="flMachine"></select>
+        </label>
+        <label class="field">
+          <span>Қидириш</span>
+          <input type="text" id="flSearch" placeholder="изоҳ/тара/индекс…" />
+        </label>
+      </div>
+      <div class="row-right">
+        <button id="btnExport" class="ghost">CSV ⬇️</button>
+        <button id="btnResetFilters" class="ghost">Филтрни тозалаш</button>
+      </div>
+    </section>
+
+    <section class="chips" id="chipsByType"></section>
+
+    <section class="card">
+      <div class="table-scroll">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th data-sort="index">Т/р</th>
+              <th data-sort="date">Сана</th>
+              <th data-sort="shift">Смена</th>
+              <th data-sort="workshop">Цех</th>
+              <th data-sort="typeName">Тур</th>
+              <th data-sort="size">Ўлчам</th>
+              <th data-sort="tare">Тара</th>
+              <th data-sort="kg">Кг</th>
+              <th data-sort="machine">Дастгоҳ</th>
+              <th data-sort="note">Изоҳ</th>
+              <th>Амaл</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="7">Жами</td>
+              <td id="tfootKg">0.00</td>
+              <td colspan="3"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Базалар (мастер-данные)</h3>
+      <div class="grid g3 g1-sm">
+        <div>
+          <h4>Цехлар</h4>
+          <div class="row">
+            <input id="wInp" placeholder="масалан, Ц-1" />
+            <button id="wAdd">Қўшиш</button>
+          </div>
+          <ul id="wList" class="list"></ul>
+        </div>
+        <div>
+          <h4>Дастгоҳлар</h4>
+          <div class="row">
+            <input id="mInp" placeholder="масалан, DG-12" />
+            <button id="mAdd">Қўшиш</button>
+          </div>
+          <ul id="mList" class="list"></ul>
+        </div>
+        <div>
+          <h4>Маҳсулот тури &amp; ўлчамлари</h4>
+          <div class="row">
+            <input id="tInp" placeholder="масалан, Бетон шуруп" />
+            <button id="tAdd">Тур қўшиш</button>
+          </div>
+          <div class="row">
+            <select id="tSel"></select>
+          </div>
+          <div class="row">
+            <input id="sInp" placeholder="Ўлчам: 7.5x92" />
+            <button id="sAdd">Ўлчам қўшиш</button>
+          </div>
+          <ul id="sList" class="list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js?v=1"></script>
+</body>
+</html>
