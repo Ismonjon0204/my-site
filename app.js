@@ -209,13 +209,33 @@ flType.onchange=()=>{
 // ===== Export CSV =====
 function exportCSV(rows){
   const head = ['Т/р','Сана','Смена','Цех','Тур','Ўлчам','Тара','Кг','Дастгоҳ','Изоҳ'];
-  const lines = [head.join(',')].concat(rows.map(e=>[
-    e.index, e.date, e.shift, e.workshop, `"${e.typeName}"`, `"${e.size}"`, `"${e.tare}"`, e.kg, `"${e.machine}"`, `"${e.note}"`
-  ].join(',')));
-  const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8;'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='plant-entries.csv'; a.click(); URL.revokeObjectURL(a.href);
+  const sep = ';';              // Excel RU/UZ одатда ; ни ажратувчи қилади
+  const lines = [head.join(sep)].concat(
+    rows.map(e => [
+      e.index,
+      e.date,
+      e.shift,
+      e.workshop,
+      `"${e.typeName}"`,
+      `"${e.size}"`,
+      `"${e.tare}"`,
+      // керак бўлса қуйидаги қаторида . ни , га алмаштирамиз:
+      String(e.kg).replace('.', ','), 
+      `"${e.machine}"`,
+      `"${e.note||''}"`
+    ].join(sep))
+  );
+
+  // Excel UTF-8 ни тўғри очиши учун BOM қўшамиз
+  const BOM = '\ufeff';
+  const blob = new Blob([BOM + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'plant-entries.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
 }
-btnExport.onclick=()=> exportCSV(applyFilters([...ENTRIES]));
+
 
 // ===== Sort =====
 function sortRows(rows){
