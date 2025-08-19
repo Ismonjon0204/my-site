@@ -11,7 +11,7 @@
 <body>
   <!-- ============ Sidebar ============ -->
   <aside class="sidebar">
-    <div class="brand">⚙️ Zavod</div>
+    <div class="brand">🏭 МЕХМАШ</div>
     <nav>
       <button class="navlink active" data-page="page-input">Kiritish</button>
       <button class="navlink" data-page="page-reports">Hisobotlar</button>
@@ -28,6 +28,7 @@
         <span class="muted">— маҳсулот киритиш</span>
       </div>
       <div class="top-actions">
+        <span class="user">И.Самиев</span>
         <button id="themeToggle" class="ghost" title="Кун/тун режими">🌙</button>
       </div>
     </header>
@@ -69,14 +70,7 @@
             <select id="fWorkshop"></select>
           </label>
 
-          <label class="field">
-            <span>Operator</span>
-            <select id="operator">
-              <option value="">tanlang</option>
-              <option>Akmal</option>
-              <option>Shokir</option>
-            </select>
-          </label>
+          <!-- operator maydoni olib tashlandi -->
 
           <label class="field">
             <span>Smena masteri</span>
@@ -133,7 +127,41 @@
 
       <button type="button" id="archiveBtn" class="warn">Arxivlash</button>
 
-      <!-- Filters -->
+      <!-- Group chips -->
+      <section class="chips" id="chipsByType"></section>
+
+      <!-- Table -->
+      <section class="card">
+        <div class="table-scroll">
+          <table id="tbl">
+            <thead>
+              <tr>
+                <th data-sort="index">Т/р</th>
+                <th data-sort="date">Сана</th>
+                <th data-sort="shift">Смена</th>
+                <th data-sort="workshop">Цех</th>
+                <th data-sort="typeName">Тур</th>
+                <th data-sort="size">Ўлчам</th>
+                <th data-sort="tare">Тара</th>
+                <th data-sort="kg">Кг</th>
+                <th data-sort="machine">Дастгоҳ</th>
+                <th data-sort="note">Изоҳ</th>
+                <th>Амaл</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="7">Жами</td>
+                <td id="tfootKg">0.00</td>
+                <td colspan="3"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+
+      <!-- Filters (JADVALDAN KEYIN ko'chirildi) -->
       <section class="card">
         <h3>Филтр</h3>
         <div class="grid g6 g3-md g1-sm">
@@ -181,40 +209,6 @@
         </div>
       </section>
 
-      <!-- Group chips -->
-      <section class="chips" id="chipsByType"></section>
-
-      <!-- Table -->
-      <section class="card">
-        <div class="table-scroll">
-          <table id="tbl">
-            <thead>
-              <tr>
-                <th data-sort="index">Т/р</th>
-                <th data-sort="date">Сана</th>
-                <th data-sort="shift">Смена</th>
-                <th data-sort="workshop">Цех</th>
-                <th data-sort="typeName">Тур</th>
-                <th data-sort="size">Ўлчам</th>
-                <th data-sort="tare">Тара</th>
-                <th data-sort="kg">Кг</th>
-                <th data-sort="machine">Дастгоҳ</th>
-                <th data-sort="note">Изоҳ</th>
-                <th>Амaл</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-            <tfoot>
-              <tr>
-                <td colspan="7">Жами</td>
-                <td id="tfootKg">0.00</td>
-                <td colspan="3"></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
-
       <!-- Masters (bases) -->
       <section class="card">
         <h3>Базалар (мастер-данные)</h3>
@@ -234,7 +228,7 @@
               <input id="mInp" placeholder="масалан, DG-12" />
               <button id="mAdd">Қўшиш</button>
             </div>
-              <ul id="mList" class="list"></ul>
+            <ul id="mList" class="list"></ul>
           </div>
 
           <div>
