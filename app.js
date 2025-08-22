@@ -5,6 +5,7 @@ const K_DB   = 'plant_db_v1';
 const K_ENT  = 'plant_entries_v1';
 const K_UI   = 'plant_ui_v1';
 const K_NEXT = 'plant_nextindex_v1';
+const K_ARCH = 'plant_archives_v1'; // ✅ arxivlar uchun
 
 const $  = sel => document.querySelector(sel);
 const $$ = sel => document.querySelectorAll(sel);
@@ -27,6 +28,7 @@ let DB = load(K_DB, {
   workshops: ['Ц-1','Ц-2']
 });
 let ENTRIES = load(K_ENT, []);
+let ARCH    = load(K_ARCH, []); // ✅ arxivlar ro‘yxati
 let UI = load(K_UI, { dark:false, sort:{key:'date',dir:'desc'}, page:1 });
 let NEXT = load(K_NEXT, 1);
 
@@ -37,6 +39,7 @@ let NEXT = load(K_NEXT, 1);
 const fDate=$('#fDate'), fShift=$('#fShift'), fWorkshop=$('#fWorkshop'), fIndex=$('#fIndex');
 const fType=$('#fType'), fSize=$('#fSize'), fMachine=$('#fMachine'), fTare=$('#fTare'), fKg=$('#fKg'), fNote=$('#fNote');
 const btnSave=$('#btnSave'), btnClear=$('#btnClear'), editBadge=$('#editBadge');
+const masterInp = $('#master'); // ✅ arxivga yozish uchun
 
 // Filtrlash
 const flFrom=$('#flFrom'), flTo=$('#flTo'), flShift=$('#flShift'), flWorkshop=$('#flWorkshop'),
@@ -60,6 +63,10 @@ const pages = {
 const wInp=$('#wInp'), wAdd=$('#wAdd'), wList=$('#wList');
 const mInp=$('#mInp'), mAdd=$('#mAdd'), mList=$('#mList');
 const tInp=$('#tInp'), tAdd=$('#tAdd'), tSel=$('#tSel'), sInp=$('#sInp'), sAdd=$('#sAdd'), sList=$('#sList');
+
+// Arxiv jadvali
+const archGridBody = $('#archGrid tbody');
+const archiveBtn = $('#archiveBtn');
 
 /* =========================
    4) Tema (kun/tun)
@@ -93,7 +100,10 @@ function updateSizesFromType(){
   const t = DB.productTypes.find(x=>x.id===id);
   fSize.innerHTML = (t?.sizes||[]).map(s=>`<option value="${s}">${s}</option>`).join('');
 }
-fType.onchange = updateSizesFromType;
+fType.addEventListener('change', () => {           // ✅ fokusni o‘lchamga olib boramiz
+  updateSizesFromType();
+  setTimeout(()=> fSize && fSize.focus(), 0);
+});
 
 /* =========================
    6) Masters render/aksiya
@@ -154,6 +164,17 @@ btnClear.onclick = resetForm;
    8) Saqlash (debounce bilan)
    ========================= */
 const saveDebounced = debounce((k,v)=>save(k,v), 250);
+
+// ✅ Klaviatura oqimi: Tare → Enter → Kg → Enter → Qo‘shish
+fTare.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){ e.preventDefault(); fKg.focus(); }
+});
+fKg.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){ e.preventDefault(); btnSave.focus(); }
+});
+btnSave.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){ e.preventDefault(); btnSave.click(); }
+});
 
 btnSave.onclick = ()=>{
   // Dastgoh tekshiruv
@@ -239,7 +260,7 @@ btnResetFilters.onclick = ()=>{
 };
 flType.onchange = ()=>{
   const t = DB.productTypes.find(x=>x.id===flType.value);
-  flSize.innerHTML = `<option value="">Барчаси</option>` + (t?.sizes||[]).map(s=>`<option value="${s}">${s}</option>`).join('');
+  flSize.innerHTML = `<option value="">Барчасi</option>` + (t?.sizes||[]).map(s=>`<option value="${s}">${s}</option>`).join('');
   UI.page = 1; renderAll(true);
 };
 // debounce qilingan inputlar
@@ -272,11 +293,9 @@ $('#tbl thead').onclick = (ev)=>{
 };
 
 /* =========================
-   11) CSV eksport
+   11) CSV eksport (umumiy funksiya)
    ========================= */
-btnExport.onclick = ()=>{
-  const f = getFilters();
-  const rows = sortRows(applyFilters(ENTRIES, f));
+function exportRowsCSV(rows, filename='plant-entries.csv'){
   const head = ['Т/р','Сана','Смена','Цех','Тур','Ўлчам','Тара','Кг','Дастгоҳ','Изоҳ'];
   const sep = ';';
   const lines = [head.join(sep)].concat(rows.map(e=>[
@@ -286,22 +305,22 @@ btnExport.onclick = ()=>{
   ].join(sep)));
   const BOM = '\ufeff';
   const blob = new Blob([BOM + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'plant-entries.csv'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click();
   URL.revokeObjectURL(a.href);
+}
+btnExport.onclick = ()=>{
+  const f = getFilters();
+  const rows = sortRows(applyFilters(ENTRIES, f));
+  exportRowsCSV(rows, 'plant-entries.csv');
 };
 
 /* =========================
    12) RenderAll (KPI + jadval + pager + chips)
    ========================= */
 let lastKey = ''; // filtr/sort kesh kaliti
-
-function buildKey(){
-  const f = getFilters();
-  return JSON.stringify({f, s:UI.sort});
-}
+function buildKey(){ const f = getFilters(); return JSON.stringify({f, s:UI.sort}); }
 
 function renderAll(force=false){
-  // KPI va jadval uchun tayyorlanish
   const key = buildKey();
   const need = force || key !== lastKey;
 
@@ -350,7 +369,7 @@ function renderAll(force=false){
   tblBody.querySelectorAll('[data-edit]').forEach(b=> b.onclick=()=> startEdit(b.dataset.edit));
   tblBody.querySelectorAll('[data-del]').forEach(b=> b.onclick=()=> removeEntry(b.dataset.del));
 
-  // Paginatsiya UI (agar bo‘lmasa yaratamiz)
+  // Paginatsiya UI
   let pager = document.getElementById('pager');
   if(!pager){
     pager = document.createElement('div');
@@ -371,7 +390,85 @@ function renderAll(force=false){
 }
 
 /* =========================
-   13) Navigatsiya (sidebar)
+   13) Arxivlash + Arxiv jadvali + Arxivdan CSV
+   ========================= */
+archiveBtn.onclick = ()=>{
+  const date = fDate.value;
+  const shift = +fShift.value;
+  const workshop = fWorkshop.value;
+  const master = (masterInp?.value||'').trim();
+
+  const items = ENTRIES.filter(e => e.date===date && e.shift===shift && e.workshop===workshop);
+  if(!items.length){ alert('Bu sana/smena/tsex uchun yozuv topilmadi.'); return; }
+
+  const arch = {
+    id: 'a'+Date.now().toString(36),
+    date, shift, workshop, master,
+    count: items.length,
+    kg: +items.reduce((s,e)=>s+e.kg,0).toFixed(2),
+    items,
+    createdAt: new Date().toISOString()
+  };
+
+  ARCH.push(arch);
+  save(K_ARCH, ARCH);
+  renderArchives();
+  alert('Smena ma’lumotlari arxivlandi ✅\n(Asosiy ro‘yxat o‘zgarmadi)');
+  // Agar arxivlangandan so‘ng ENTRIESdan olib tashlamoqchi bo‘lsangiz:
+  // ENTRIES = ENTRIES.filter(e => !(e.date===date && e.shift===shift && e.workshop===workshop));
+  // save(K_ENT, ENTRIES); renderAll(true);
+};
+
+function renderArchives(){
+  if(!archGridBody) return;
+  archGridBody.innerHTML = ARCH.map(a=>`
+    <tr>
+      <td>${a.id}</td>
+      <td>${a.date}</td>
+      <td>${a.shift}</td>
+      <td>${a.workshop}</td>
+      <td>${a.master||''}</td>
+      <td>${a.count}</td>
+      <td>${fmt(a.kg)}</td>
+      <td>
+        <button class="ghost" data-ax="csv" data-id="${a.id}">CSV</button>
+        <button class="ghost" data-ax="view" data-id="${a.id}">Ko'rish</button>
+        <button class="ghost" data-ax="del" data-id="${a.id}">🗑️</button>
+      </td>
+    </tr>
+  `).join('');
+
+  archGridBody.querySelectorAll('button[data-ax]').forEach(b=>{
+    const id = b.dataset.id;
+    b.onclick = ()=>{
+      const a = ARCH.find(x=>x.id===id); if(!a) return;
+      const ax = b.dataset.ax;
+      if(ax==='csv'){
+        // ✅ Arxivdan Excel/CSV
+        exportRowsCSV(a.items, `archive_${a.date}_sm${a.shift}_${a.workshop}.csv`);
+      }
+      if(ax==='view'){
+        // arxivdagi kontekstni filtrlab ko‘rsatish
+        flFrom.value = a.date; flTo.value = a.date;
+        flShift.value = String(a.shift);
+        flWorkshop.value = a.workshop;
+        showPage('input');
+        renderAll(true);
+        window.scrollTo({top:0, behavior:'smooth'});
+      }
+      if(ax==='del'){
+        if(confirm('Ushbu arxivni o‘chirilsinmi?')){
+          ARCH = ARCH.filter(x=>x.id!==id);
+          save(K_ARCH, ARCH);
+          renderArchives();
+        }
+      }
+    };
+  });
+}
+
+/* =========================
+   14) Navigatsiya (sidebar)
    ========================= */
 function showPage(name){
   pages.input.hidden = name!=='input';
@@ -384,7 +481,7 @@ navButtons.forEach(b=>{
 });
 
 /* =========================
-   14) Init
+   15) Init
    ========================= */
 function init(){
   fDate.value = today();
@@ -395,8 +492,9 @@ function init(){
   applyTheme();
   resetForm();
   renderAll(true);
+  renderArchives(); // ✅ arxiv jadvalini ham chizamiz
 
-  // Filtr: tur o'zgarganda o'lchamni yangilash
+  // Filtr: tur o'zgarganda o'lchamni yangilash (pastdagi filter selecti)
   flType.dispatchEvent(new Event('change'));
 
   // Birinchi sahifa – Kiritish
